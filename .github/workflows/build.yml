@@ -33,14 +33,15 @@ jobs:
           pip install "cython<3.0"
           pip install buildozer
 
-      - name: Configure Android SDK layout for Buildozer
+      - name: Prepare Android SDK 33
         run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33" "build-tools;33.0.2"
           mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
           ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/
           ln -sf $ANDROID_HOME/cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/
           ln -sf $ANDROID_HOME/build-tools ~/.buildozer/android/platform/android-sdk/build-tools
           ln -sf $ANDROID_HOME/platforms ~/.buildozer/android/platform/android-sdk/platforms
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Build APK with Buildozer
         run: |
